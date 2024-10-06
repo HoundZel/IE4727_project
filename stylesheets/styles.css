@@ -15,7 +15,7 @@ a{
 
 body{
     background-color: #e8f0f7;
-    height: 5000px;
+    height: 200vh;
     padding-top: 60px;
 }
 
@@ -119,4 +119,72 @@ body{
     .hamburger{
         display: block;
     }
+}
+
+.content{
+    border: 2px solid red;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.content div{
+    border: 2px solid red;
+}
+
+.banner{
+    text-align: center;
+    margin:0;
+    padding:0;
+    width:100vw;
+    max-height:50vh;
+}
+
+.banner img {
+    max-height:50vh;
+    width:auto;
+    object-fit: fill;
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.topseller{
+    text-align: center;
+    margin:0;
+    padding:15px;
+    width:100vw;
+    max-height:40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.topseller div{
+    margin: 0 10px 0 10px;
+    height: 100%;
+    width: 30vw;
+}
+
+.aboutus{
+    text-align: center;
+    margin:0;
+    padding:0;
+    width:100vw;
+    max-height:40vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.aboutImg{
+    width: 30vw;
+    height: auto;
+    margin: 0 10px 0 10px;
+}
+
+.aboutText{
+    width: 50vw;
+    height: auto;
+    margin: 0 10px 0 10px;
 }
