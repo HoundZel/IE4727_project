@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professionals</title>
+    <link rel="icon" href="media/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="stylesheets/styles.css">
  </head>
  <body>
@@ -37,24 +38,56 @@
     
     <div class="content">
         <div class="banner">
-            <img src="media/banner.png" alt="Banner Image">
+            <div class="slideshow-container">
+                <img id="slideshow" src="media/banner.png" alt="Banner Image">
+                <a onclick='prevImage();' class="prev" >&#10094;</a>
+                <a onclick='nextImage();' class="next" >&#10095;</a>
+            </div>
         </div>
         <br>
-        <p>Best Sellers</p>
+        <h2><u>Best Sellers</u></h2>
         <div class="topseller">
-            <div class="first">first</div>
-            <div class="second">second</div>
-            <div class="third">third</div>
+            <div class="first">
+                <img class="topImg" src="media/curryfish.jpg">
+                <p>Curry Fish</p>
+            </div>
+            <div class="second">
+                <img class="topImg" src="media/springroll.jpg">
+                <p>Spring Roll</p>
+            </div>
+            <div class="third">
+                <img class="topImg" src="media/muffin.jpg">
+                <p>Blueberry Muffins</p>
+            </div>
         </div>
         <br>
-        <p>About Us</p>
+        <h2><u>About Us</u></h2>
         <div class="aboutus">
-            <div class="aboutImg">image</div>
-            <div class="aboutText">text</div>
+            <div class="aboutImg">
+                <img src="media/aboutus.png" alt="Aboutus Image">
+            </div>
+            <div class="aboutText">
+                <h3>Welcome to Professionals Catering, where we bring culinary excellence to your events. Our team of experienced chefs and dedicated staff are committed to providing exceptional service and delicious food that will leave a lasting impression on your guests. Whether it's a corporate event, wedding, or private party, we tailor our menus to suit your needs and preferences. </h3>
+                <br>
+                <h3>At Professionals Catering, we believe in using the freshest ingredients and innovative recipes to create memorable dining experiences. Let us take care of the details so you can enjoy your special occasion to the fullest.</h3>
+            </div>
         </div>
     </div>
 
-    <footer class="footer"></footer>
+    <footer class="footer">
+        <div class="footer_content">
+            <div class="footer_section">
+                <h4>Contact Us</h4>
+                <p>Email: info@professionalscatering.com</p>
+                <p>Phone: (123) 456-7890</p>
+                <p>Address: 123 Catering Lane, Food City, FC 12345</p>
+            </div>
+            <br>
+        </div>
+        <div class="footer_bottom">
+            <p>&copy; 2024 Professionals Catering. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="js/script.js"></script>
  </body>
