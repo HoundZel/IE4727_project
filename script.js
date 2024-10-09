@@ -13,9 +13,9 @@ navE1.addEventListener('click', () => {
 
 // Array of image sources
 const images = [
-  '../media/banner.png',
-  '../media/banner2.png',
-  '../media/banner3.png'
+  'media/banner.png',
+  'media/banner2.png',
+  'media/banner3.png'
 ];
 
 // Index to keep track of the current image
