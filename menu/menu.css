@@ -1,0 +1,35 @@
+.content{
+    border:2px solid red;
+    display: flex;
+    flex-direction: row;
+}
+
+.content div{
+    border:2px solid red;
+}
+
+.right{
+    margin: 0;
+    padding: 0;
+}
+
+.left{
+    margin: 0;
+    padding: 0;
+    max-width: 20vw;
+    background-color: #7ac1ff;
+}
+
+/* Mobile version */
+@media (max-width: 768px) {
+    .left{
+        width: 0;
+    }
+}
+
+/* PC version */
+@media (min-width: 769px) {
+    .left{
+        width: 20vw;
+    }
+}

@@ -252,6 +252,10 @@ body{
     height: auto;
 }
 
+#top{
+    text-align: center;
+}
+
 .aboutus{
     text-align: center;
     margin:0;
