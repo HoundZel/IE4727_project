@@ -18,7 +18,7 @@
             <nav class="nav">
                 <ul class="nav_list">
                     <li class="nav_item">
-                        <a href="menu/menu.html" class="nav_link">Menu</a>
+                        <a href="menu/menu.php" class="nav_link">Menu</a>
                     </li>
                     <li class="nav_item">
                         <a href="#" class="nav_link">Order</a>
@@ -91,6 +91,26 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.logo');
+    
+            for (const link of links) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    </script>
  </body>
  </html>
 

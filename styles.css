@@ -37,7 +37,7 @@ body{
 
 @font-face{
     font-family:tomatoes;
-    src:url('../media/tomatoes.ttf');
+    src:url('media/tomatoes.ttf');
 }
 
 .logo{
