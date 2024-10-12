@@ -1,4 +1,8 @@
 <!-- this is the landing page -->
+ <?php
+    session_start();
+?>
+
  <!DOCTYPE html>
  <html lang="en">
  <head>
@@ -23,9 +27,18 @@
                     <li class="nav_item">
                         <a href="#" class="nav_link">Order</a>
                     </li>
-                    <li class="nav_item">
-                        <a href="login/login.php" class="nav_link">Login</a>
-                    </li>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <li class="nav_item">
+                            <a href="logout.php" class="nav_link">Logout</a>
+                        </li>
+                        <li class="nav_item">
+                            <span class="nav_link">Hello, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav_item">
+                            <a href="login/login.php" class="nav_link">Login</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </nav>
 

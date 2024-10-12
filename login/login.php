@@ -1,23 +1,61 @@
 <!-- this is the login page -->
 <?php
-
-// Database connection
-$servername = "localhost"; // Change if different
-$username = "root"; // Replace with your username
-$password = ""; // Replace with your password
-$dbname = "professionals";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Start session
 session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Database connection
+    $servername = "localhost"; // Change if different
+    $username = "root"; // Replace with your username
+    $password = ""; // Replace with your password
+    $dbname = "professionals";
 
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Check which form was submitted
+    $form_type = $_POST['form_type'];
+
+    if ($form_type == 'login') {
+        // Login form was submitted
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        // Authenticate user
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // User authenticated
+            $_SESSION['username'] = $username;
+            header("Location: ../index.php");
+        } else {
+            // Authentication failed
+            echo "<script>alert('Invalid username or password'); window.location.href = 'login.php';</script>";
+        }
+    } elseif ($form_type == 'signup') {
+        // Signup form was submitted
+        $username = $_POST['username'];
+        $contact = $_POST['contact'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        // Insert new user
+        $stmt = $conn->prepare("INSERT INTO users (username, contact, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("siss", $username, $contact, $email, $password);
+        if ($stmt->execute()) {
+            $_SESSION['username'] = $username;
+            echo "<script>alert('Registration successful!'); window.location.href = '../index.php';</script>";
+        } else {
+            echo "<script>alert('Registration failed. Please try again.'); window.location.href = 'login.php';</script>";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +70,6 @@ session_start();
 
 <style>
 .content{
-    border: 2px solid red;
     min-height: 85vh;
     display: flex;
     justify-content: center;
@@ -79,7 +116,7 @@ form{
 @media (min-width: 769px) {
     .container{
         flex-direction: row;
-        height:70vh;
+        height:60vh;
     }
     .container div{
         width: 50%;
@@ -89,6 +126,17 @@ form{
         border-right: 2px solid gray;
     }
 }
+
+form input{
+    border: 2px solid #000;
+    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+form input:valid {
+    border-color: green;
+  }
 
 /* New CSS for buttons */
 button, input[type="submit"] {
@@ -116,21 +164,30 @@ button, input[type="submit"] {
 <body>
    <header class="header">
        <div class="header_content">
-           <a href="../index.html" class="logo">Professionals Catering</a>
+           <a href="../index.php" class="logo">Professionals Catering</a>
 
            <nav class="nav">
-               <ul class="nav_list">
-                   <li class="nav_item">
-                       <a href="../menu/menu.php" class="nav_link">Menu</a>
-                   </li>
-                   <li class="nav_item">
-                       <a href="#" class="nav_link">Order</a>
-                   </li>
-                   <li class="nav_item">
-                       <a href="#head" class="nav_link">Login</a>
-                   </li>
-               </ul>
-           </nav>
+                <ul class="nav_list">
+                    <li class="nav_item">
+                        <a href="../menu/menu.php" class="nav_link">Menu</a>
+                    </li>
+                    <li class="nav_item">
+                        <a href="#" class="nav_link">Order</a>
+                    </li>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <li class="nav_item">
+                            <a href="../logout.php" class="nav_link">Logout</a>
+                        </li>
+                        <li class="nav_item">
+                            <span class="nav_link">Hello, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav_item">
+                            <a href="#head" class="nav_link">Login</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
 
            <div class="hamburger">
                <div class="bar"></div>
@@ -144,17 +201,18 @@ button, input[type="submit"] {
    <div class="content">
         <div class="container">
             <div class="login">
-                <form action="login_process.php" method="post">
+                <form action="login.php" method="post" onsubmit="return validateForm()">
+                    <input type="hidden" name="form_type" value="login">
                     <br>
                     <br>
                     <u><b>Login</b></u>
                     <br>
                     <br>
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required><br><br>
+                    <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
 
                     <input type="submit" value="Login">
                     <br>
@@ -162,23 +220,24 @@ button, input[type="submit"] {
                 </form>
             </div>
             <div class="signup">
-                <form action="signup_process.php" method="post">
+                <form action="login.php" method="post" onsubmit="return validateForm()">
+                    <input type="hidden" name="form_type" value="signup">
                     <br>
                     <br>
                     <u><b>Sign Up</b></u>
                     <br>
                     <br>
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required><br><br>
+                    <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="contact">Contact:</label>
-                    <input type="text" id="contact" name="contact" required><br><br>
+                    <input type="text" id="contact" name="contact" placeholder="8123 4567" pattern="[0-9\s]+" required><br><br>
 
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required><br><br>
+                    <input type="email" id="email" name="email" placeholder="yujiitadori@gmail.com" pattern="^[A-Za-z0-9.-]+@[A-Za-z].[A-za-z]{2,3}" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
 
                     <input type="submit" value="Sign Up">
                     <br>
