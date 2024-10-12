@@ -40,6 +40,11 @@ body{
     src:url('media/tomatoes.ttf');
 }
 
+@font-face{
+    font-family: gamilia;
+    src:url('media/gamillia.ttf');
+}
+
 .logo{
     font-family: tomatoes, sans-serif;
     color: #fff;
@@ -130,6 +135,7 @@ body{
 
 .content{
     /* border: 2px solid red; */
+    font-family: gamilia, sans-serif;
     align-items: center;
     display: flex;
     flex-direction: column;

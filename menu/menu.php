@@ -27,7 +27,7 @@
 </head>
 
 <style>
-    .content{
+.content{
     display: flex;
     flex-direction: row;
     min-height: 85vh;
@@ -147,7 +147,7 @@ img {
                        <a href="#" class="nav_link">Order</a>
                    </li>
                    <li class="nav_item">
-                       <a href="#" class="nav_link">Cart</a>
+                       <a href="../login/login.php" class="nav_link">Login</a>
                    </li>
                </ul>
            </nav>
