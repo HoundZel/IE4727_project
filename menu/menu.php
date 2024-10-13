@@ -211,7 +211,7 @@ img {
                                     echo "<br>";
                                     echo "<p>Price: $" . $row["price"] . "/pax</p>";
                                     echo "<br>";
-                                    echo "<a class='order' href='../cart/cart.php'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
+                                    echo "<a class='order' href='../cart/cart.php?product_id=". $row["name"] ."' value='regular'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
                                     echo "</div>";
                                 }
                             } else {
@@ -236,7 +236,7 @@ img {
                                     echo "<p>" . $row["name"] . "</p>";
                                     echo "<p>Price: $" . $row["price"] . "/pax</p>";
                                     echo "<br>";
-                                    echo "<a class='order' href='../cart/cart.php'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
+                                    echo "<a class='order' href='../cart/cart.php?product_id=". $row["name"] ."' value='mini'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
                                     echo "</div>";
                                 }
                             } else {
@@ -261,7 +261,7 @@ img {
                                     echo "<p>" . $row["name"] . "</p>";
                                     echo "<p>Price: $" . $row["price"] . "/pax</p>";
                                     echo "<br>";
-                                    echo "<a class='order' href='../cart/cart.php'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
+                                    echo "<a class='order' href='../cart/cart.php?product_id=". $row["name"] ."' value='bento'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
                                     echo "</div>";
                                 }
                             } else {
@@ -286,7 +286,7 @@ img {
                                     echo "<p>" . $row["name"] . "</p>";
                                     echo "<p>Price: $" . $row["price"] . "/pax</p>";
                                     echo "<br>";
-                                    echo "<a class='order' href='../cart/cart.php'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
+                                    echo "<a class='order' href='../cart/cart.php?product_id=". $row["name"] ."' value='hightea'>&nbsp;&nbsp;&nbsp;&nbsp;Order&nbsp;&nbsp;&nbsp;&nbsp;</a>";
                                     echo "</div>";
                                 }
                             } else {
