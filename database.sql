@@ -117,6 +117,12 @@ create table if not exists orders(
     id int primary key auto_increment,
     username varchar(100),
     itemname varchar(100),
+    dishlist varchar(1000),
+    address varchar(100),
+    unit varchar(100),
+    postalcode int(6),
+    date date,
+    time varchar(100),
     quantity int,
     total decimal(5,2),
     created_at timestamp default current_timestamp

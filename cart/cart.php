@@ -81,6 +81,15 @@ if (!isset($_SESSION['username'])) {
         outline: none; /* Remove outline */
         box-shadow: 0 0 5px #4CAF50; /* Add a green shadow */
     }
+
+    #price-details {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        width: 50%;
+    }
+
 </style>
 
 <body>
@@ -121,16 +130,18 @@ if (!isset($_SESSION['username'])) {
 
    <div id="head"></div>   
    <div class="content">
+        <br><br>
         <div class="container">
+            <form id='dish-form' action="submit_order.php" method="post">
         <?php
             if (isset($_GET['product_id'])) {
                 $product_id = htmlspecialchars($_GET['product_id']);
 
                 // Fetch the category of the product from the menu table
-                $stmt = $conn->prepare("SELECT category FROM menu WHERE name = ?");
+                $stmt = $conn->prepare("SELECT category,price FROM menu WHERE name = ?");
                 $stmt->bind_param("s", $product_id);
                 $stmt->execute();
-                $stmt->bind_result($category);
+                $stmt->bind_result($category, $price);
                 $stmt->fetch();
                 $stmt->close();
 
@@ -145,7 +156,6 @@ if (!isset($_SESSION['username'])) {
                     $result = $stmt->get_result();
 
                     if ($result->num_rows > 0) {
-                        echo "<form>";
                         echo "<table>";
 
                         $current_course = "";
@@ -158,14 +168,11 @@ if (!isset($_SESSION['username'])) {
                             if ($category === "bento") {
                                 echo "<tr><td><input type='checkbox' class='hidden-checkbox' name='selected_dishes[]' value='" . htmlspecialchars($row['name']) . "' checked></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
                             } else {
-                                echo "<tr><td><input type='checkbox' name='selected_dishes[]' value='" . htmlspecialchars($row['name']) . "'></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
+                                echo "<tr><td><input type='checkbox' class='course-checkbox' name='selected_dishes[" . htmlspecialchars($current_course) . "]' value='" . htmlspecialchars($row['name']) . "' data-course='" . htmlspecialchars($current_course) . "'></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
                             }
                         }
-
                         echo "</table>";
                         echo "<br>";
-                        echo "<input type='submit' value='Submit'>";
-                        echo "</form>";
                     } else {
                         echo "<p>No dishes found in this category.</p>";
                     }
@@ -177,10 +184,53 @@ if (!isset($_SESSION['username'])) {
             } else {
                 echo "<h1>No product selected</h1>";
             }
-
-            $conn->close();
             ?>
+            <br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required><br><br>
+
+            <label for="unit_number">Unit Number:</label>
+            <input type="text" id="unit_number" name="unit_number" required><br><br>
+
+            <label for="postal_code">Postal Code:</label>
+            <input type="text" id="postal_code" name="postal_code" required><br><br>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" required><br><br>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required><br><br>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" value="1" required><br><br>
+            
+            <div id="price-details">
+                <table>
+                    <tr>
+                        <td>Subtotal:</td>
+                        <td id="subtotal">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>GST (9%):</td>
+                        <td id="gst">$0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Fee:</td>
+                        <td>$20.00</td>
+                    </tr>
+                    <tr>
+                        <td>Grand Total:</td>
+                        <td id="grand-total">$20.00</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <input type="hidden" id="total" name="total">
+            <input type="hidden" id="product_id" name="product_id" value="<?php echo $product_id; ?>">
+            <input type='submit' value='Submit'>
+            </form>
         </div>
+        <br><br><br><br>
    </div>
 
    <footer class="footer">
@@ -200,7 +250,7 @@ if (!isset($_SESSION['username'])) {
 
    <script src="../script.js"></script>
    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('.course-checkbox');
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
@@ -214,6 +264,25 @@ if (!isset($_SESSION['username'])) {
                     }
                 });
             });
+
+            const quantityInput = document.getElementById('quantity');
+                const price = <?php echo $price; ?>;
+                const deliveryFee = 20.00;
+
+                function updatePriceDetails() {
+                    const quantity = parseInt(quantityInput.value);
+                    const subtotal = quantity * price;
+                    const gst = subtotal * 0.09;
+                    const grandTotal = subtotal + gst + deliveryFee;
+
+                    document.getElementById('subtotal').innerText = `$${subtotal.toFixed(2)}`;
+                    document.getElementById('gst').innerText = `$${gst.toFixed(2)}`;
+                    document.getElementById('grand-total').innerText = `$${grandTotal.toFixed(2)}`;
+                    document.getElementById('total').value = grandTotal.toFixed(2);
+                }
+
+                quantityInput.addEventListener('input', updatePriceDetails);
+                updatePriceDetails(); // Initial call to set the values
         });
     </script>
 </body>
