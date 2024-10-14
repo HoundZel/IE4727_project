@@ -218,7 +218,7 @@ if (!isset($_SESSION['username'])) {
                         <td>Delivery Fee:</td>
                         <td>$20.00</td>
                     </tr>
-                    <tr>
+                    <tr style="border-top: 1px solid gray;">
                         <td>Grand Total:</td>
                         <td id="grand-total">$20.00</td>
                     </tr>
