@@ -152,8 +152,7 @@ $conn->close();
                 <div class="right">
                     <table>
                         <tr>
-                            <th>Item Name:</th>
-                            <td><?php echo htmlspecialchars($order['itemname']); ?></td>
+                            <th colspan="2" style="text-align: center;"><b><u><?php echo htmlspecialchars($order['itemname']); ?></u></b></th>
                         </tr>
                         <tr>
                             <th>Dish List:</th>
@@ -175,7 +174,7 @@ $conn->close();
                         </tr>
                         <tr>
                             <th> </th>
-                            <td>S<?php echo htmlspecialchars($order['postalcode']); ?></td>
+                            <td>Singapore <?php echo htmlspecialchars($order['postalcode']); ?></td>
                         </tr>
                         <tr>
                             <th>Date and Time:</th>
@@ -183,11 +182,11 @@ $conn->close();
                         </tr>
                         <tr>
                             <th>Quantity:</th>
-                            <td><?php echo htmlspecialchars($order['quantity']); ?></td>
+                            <td><?php echo htmlspecialchars($order['quantity']); ?> pax</td>
                         </tr>
                         <tr>
                             <th>Total:</th>
-                            <td><?php echo htmlspecialchars($order['total']); ?></td>
+                            <td>$<?php echo htmlspecialchars($order['total']); ?></td>
                         </tr>
                         <tr>
                             <th>Status:</th>

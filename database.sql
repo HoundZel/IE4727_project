@@ -124,9 +124,14 @@ create table if not exists orders(
     date date,
     time varchar(100),
     quantity int,
-    total decimal(5,2),
+    total decimal(7,2),
     created_at timestamp default current_timestamp
 );
+
+insert into orders values
+    (1, 'admin1', 'Super Value', 'Fried Bee Hoon,Signature Curry Chicken,Chinese Cabbage,Cabbage Spring Roll,Chilled Honeydew Sago,Refreshing Tropical Punch', '508 Chai Chee Lane #06-01', '01', '469032', '2023-12-16', '14:30', '25', '456.00', '2023-10-14 21:20:31'),
+    (2, 'admin1', 'Indian Bento Set', 'Buttered Broccoli & Baby Carrot,Chilled Aloe Vera with Peach and Black Pearl,Creamy Honey Glazed Salmon Fillets,Golden Onion Rings,Homemade Garlic Bread,Italian Fusilli Pasta w Neapolitan Sauce', '2 Orchard Turn', '26', '238801', '2024-10-06', '15:00', '150', '2636.00', '2024-10-01 22:00:34'),
+    (3, 'admin1', 'High Tea Set', 'Japanese Potato Salad,Yong Chow Fried Rice,New York Mini Cheese Cake,Golden Prawn Ball,Chilled Cheng Tng,Refreshing Tropical Punch', '50 Nanyang Ave', '86', '639798', '2025-01-31', '08:30', '500', '6015.00', '2024-10-14 22:03:56');
 
 create table if not exists feedback(
     id int primary key auto_increment,

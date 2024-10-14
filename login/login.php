@@ -118,7 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 .login{
     display: flex;
     flex-direction: column;
-    border-right: 2px solid gray;
     padding: 20px;
 }
 #change-password-form {
