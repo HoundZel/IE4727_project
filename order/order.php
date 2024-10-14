@@ -24,6 +24,30 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+// Retrieve orders for the logged-in user
+$username = $_SESSION['username'];
+$stmt = $conn->prepare("SELECT * FROM orders WHERE username = ? ORDER BY created_at DESC");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    // Fetch the image name from the menu table
+    $itemname = $row['itemname'];
+    $img_stmt = $conn->prepare("SELECT imgname FROM menu WHERE name = ?");
+    $img_stmt->bind_param("s", $itemname);
+    $img_stmt->execute();
+    $img_result = $img_stmt->get_result();
+    $img_row = $img_result->fetch_assoc();
+    $imgname = $img_row['imgname'];
+
+    $row['imgname'] = $imgname;
+    $orders[] = $row;
+}
+
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -31,13 +55,18 @@ if (!isset($_SESSION['username'])) {
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Professionals</title>
+   <title>Professionals - Orders</title>
    <link rel="icon" href="../media/favicon.ico" type="image/x-icon">
    <link rel="stylesheet" href="../styles.css">
 </head>
 
 <style>
+    .content{
+        min-height: 90vh;
+    }
+
     .container {
+        display: flex;
         background-color: white;
         border-radius: 20px;
         border: 1px solid gray;
@@ -48,6 +77,14 @@ if (!isset($_SESSION['username'])) {
         padding: 20px; /* Optional: Add padding for better content spacing */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visual appeal */
     }
+    .left {
+            width: 15%;
+            padding-right: 10px;
+    }
+    .right {
+        width: 85%;
+        padding-left: 20px;
+    }
     table {
            width: 100%;
            border-collapse: collapse;
@@ -56,6 +93,14 @@ if (!isset($_SESSION['username'])) {
     th, td {
         padding: 10px 0 10px 0;
         text-align: left;
+        vertical-align: top;
+    }
+    img{
+        border-radius: 20px;
+        border: 1px solid black;
+    }
+    ol.s {
+        list-style-type: inherit;
     }
 </style>
 
@@ -98,9 +143,70 @@ if (!isset($_SESSION['username'])) {
    <div id="head"></div>   
    <div class="content">
         <br><br>
-        <div class="container">
-            
-        </div>
+        <h1>Orders</h1>
+        <?php foreach ($orders as $order): ?>
+            <div class="container">
+                <div class="left">
+                    <img src="../media/menu/<?php echo htmlspecialchars($order['imgname']); ?>.jpg" alt="<?php echo htmlspecialchars($order['itemname']); ?>" style="width: 100%;">
+                </div>
+                <div class="right">
+                    <table>
+                        <tr>
+                            <th>Item Name:</th>
+                            <td><?php echo htmlspecialchars($order['itemname']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Dish List:</th>
+                            <td>
+                                <ol class="s">
+                                    <?php foreach (explode(',', $order['dishlist']) as $dish): ?>
+                                        <li><?php echo htmlspecialchars($dish); ?></li>
+                                    <?php endforeach; ?>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Address:</th>
+                            <td><?php echo htmlspecialchars($order['address']); ?></td>
+                        </tr>
+                        <tr>
+                            <th> </th>
+                            <td><?php echo htmlspecialchars($order['unit']); ?></td>
+                        </tr>
+                        <tr>
+                            <th> </th>
+                            <td>S<?php echo htmlspecialchars($order['postalcode']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Date and Time:</th>
+                            <td><?php echo htmlspecialchars($order['date'] . ' , ' . $order['time']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Quantity:</th>
+                            <td><?php echo htmlspecialchars($order['quantity']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Total:</th>
+                            <td><?php echo htmlspecialchars($order['total']); ?></td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>
+                                <?php
+                                $orderDateTime = new DateTime($order['date'] . ' ' . $order['time']. ':00');
+                                $currentDateTime = new DateTime();
+                                if ($orderDateTime > $currentDateTime) {
+                                    echo "Paid";
+                                } else {
+                                    echo "Delivered";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        <?php endforeach; ?>
         <br><br><br><br>
    </div>
 

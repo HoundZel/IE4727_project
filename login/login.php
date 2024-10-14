@@ -54,6 +54,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "<script>alert('Registration failed. Please try again.'); window.location.href = 'login.php';</script>";
         }
+    } elseif ($form_type == 'change') {
+        // Change password form was submitted
+        $username = $_POST['username'];
+        $new_password = $_POST['password'];
+    
+        // Check if the username exists
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            // Username exists, update the password
+            $stmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+            $stmt->bind_param("ss", $new_password, $username);
+            if ($stmt->execute()) {
+                echo "<script>alert('Password changed successfully!'); window.location.href = 'login.php';</script>";
+            } else {
+                echo "<script>alert('Password change failed. Please try again.'); window.location.href = 'login.php';</script>";
+            }
+        } else {
+            // Username does not exist
+            echo "<script>alert('Username does not exist'); window.location.href = 'login.php';</script>";
+        }
     }
 }
 ?>
@@ -63,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Professionals</title>
+   <title>Professionals - Login</title>
    <link rel="icon" href="../media/favicon.ico" type="image/x-icon">
    <link rel="stylesheet" href="../styles.css">
 </head>
@@ -91,6 +115,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     align-items: center;
 }
 
+.login{
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid gray;
+    padding: 20px;
+}
+#change-password-form {
+    display: none;
+}
+.forgot-password {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
 form{
     align-items: left;
     text-align: left;
@@ -218,6 +256,24 @@ button, input[type="submit"] {
                     <br>
                     <br>
                 </form>
+                <a class="forgot-password" onclick="showChangePasswordForm()">Forgot your password?</a>
+                <form id="change-password-form" action="login.php" method="post" onsubmit="return validateForm()">
+                    <input type="hidden" name="form_type" value="change">
+                    <br>
+                    <br>
+                    <u><b>Change Password</b></u>
+                    <br>
+                    <br>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
+
+                    <input type="submit" value="Change">
+                    <br>
+                    <br>
+                </form>
             </div>
             <div class="signup">
                 <form action="login.php" method="post" onsubmit="return validateForm()">
@@ -263,6 +319,20 @@ button, input[type="submit"] {
    </footer>
 
    <script src="../script.js"></script>
+   <script>
+        function showChangePasswordForm() {
+            const form = document.getElementById('change-password-form');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+        function validateForm() {
+            // Add your form validation logic here
+            return true;
+        }
+    </script>
 </body>
 </html>
 
