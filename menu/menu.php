@@ -145,7 +145,7 @@ img {
                         <a href="#head" class="nav_link">Menu</a>
                     </li>
                     <li class="nav_item">
-                        <a href="#" class="nav_link">Order</a>
+                        <a href="../order/order.php" class="nav_link">Order</a>
                     </li>
                     <?php if (isset($_SESSION['username'])): ?>
                         <li class="nav_item">

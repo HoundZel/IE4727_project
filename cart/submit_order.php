@@ -40,7 +40,7 @@ $stmt->bind_param("ssssssssii", $username, $itemname, $dishlist, $address, $unit
 
 // Execute the statement
 if ($stmt->execute()) {
-    header("Location: ../index.php");
+    header("Location: ../order/order.php");
     exit();
 } else {
     echo "Error: " . $stmt->error;

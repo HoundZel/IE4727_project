@@ -103,7 +103,7 @@ if (!isset($_SESSION['username'])) {
                         <a href="../menu/menu.php" class="nav_link">Menu</a>
                     </li>
                     <li class="nav_item">
-                        <a href="#" class="nav_link">Order</a>
+                        <a href="../order/order.php" class="nav_link">Order</a>
                     </li>
                     <?php if (isset($_SESSION['username'])): ?>
                         <li class="nav_item">
@@ -229,7 +229,6 @@ if (!isset($_SESSION['username'])) {
             <input type="hidden" id="product_id" name="product_id" value="<?php echo $product_id; ?>">
             <input type='submit' value='Submit'>
             </form>
-        </div>
         <br><br><br><br>
    </div>
 
