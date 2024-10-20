@@ -13,7 +13,7 @@ create table if not exists users(
 );
 
 insert into users values
-    (1, 'admin1', 81234567, 'admin@gmail.com', 'admin_123', '2024-10-13 20:35:02');
+    (1, 'admin1', 81234567, 'f31ee@localhost', 'admin_123', '2024-10-13 20:35:02');
 
 create table if not exists menu(
     name varchar(100),
