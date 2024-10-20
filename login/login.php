@@ -305,7 +305,7 @@ button, input[type="submit"] {
    <footer class="footer">
        <div class="footer_content">
            <div class="footer_section">
-               <h4>Contact Us</h4>
+                <h4><a href="../feedback/feedback.php">Contact Us</a></h4>
                <p>Email: info@professionalscatering.com</p>
                <p>Phone: (123) 456-7890</p>
                <p>Address: 123 Catering Lane, Food City, FC 12345</p>
