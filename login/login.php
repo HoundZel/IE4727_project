@@ -289,7 +289,7 @@ button, input[type="submit"] {
                     <input type="text" id="contact" name="contact" placeholder="8123 4567" pattern="[0-9\s]+" required><br><br>
 
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="yujiitadori@gmail.com" pattern="^[A-Za-z0-9.-]+@[A-Za-z].[A-za-z]{2,3}" required><br><br>
+                    <input type="email" id="email" name="email" placeholder="yujiitadori@gmail.com" required><br><br>
 
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
@@ -328,7 +328,22 @@ button, input[type="submit"] {
             }
         }
         function validateForm() {
-            // Add your form validation logic here
+            // Validate Email
+            var email = document.getElementById("email").value;
+            var emailRegex = /^[\w.-]+@[A-Za-z\d.-]+\.[A-Za-z]{2,3}$/;
+            var emailRegex1 = /^[\w.-]+@[A-Za-z\d.-]+\.[A-Za-z]{2,3}(\.[A-Za-z]{2,3}){1,3}$/; // Email format
+            if (emailRegex.test(email)) {
+
+            }
+            else if(emailRegex1.test(email)) {
+
+            }
+            else{
+                alert("Please enter a valid email address.");
+                event.preventDefault();
+            return;
+            }
+
             return true;
         }
     </script>
