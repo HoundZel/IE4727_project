@@ -135,6 +135,8 @@ insert into orders values
 
 create table if not exists feedback(
     id int primary key auto_increment,
+    username varchar(100),
+    contact int(8),
     email varchar(100),
     topic varchar(100),
     feedback text,
