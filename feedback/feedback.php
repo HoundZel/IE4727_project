@@ -24,19 +24,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $conn->connect_error);
     }
 
+    $username = $_SESSION['username'];
+
+    // Get the user's email from the database
+    $email_query = $conn->prepare("SELECT email FROM users WHERE username = ?");
+    $email_query->bind_param("s", $username);
+    $email_query->execute();
+    $email_result = $email_query->get_result();
+
+    if ($email_result->num_rows > 0) {
+    $row = $email_result->fetch_assoc();
+    $user_email = $row['email'];
+    } else {
+    echo "Error: Unable to retrieve email for the user.";
+    exit();
+    }
+
+    // Get the user's contact number from the database
+    $contact_query = $conn->prepare("SELECT contact FROM users WHERE username = ?");
+    $contact_query->bind_param("s", $username);
+    $contact_query->execute();
+    $contact_result = $contact_query->get_result();
+
+    if ($contact_result->num_rows > 0) {
+    $row = $contact_result->fetch_assoc();
+    $user_contact = $row['contact'];
+    } else {
+    echo "Error: Unable to retrieve contact for the user.";
+    exit();
+    }
+
     // Get form input values
-    $email = $_POST['email'];
+    $contact=$user_contact;
+    $email = $user_email;
     $topic = $_POST['topic'];
     $feedback = $_POST['feedback_input'];
 
     // Insert data into the feedback table
-    $stmt = $conn->prepare("INSERT INTO feedback (email, topic, feedback) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $email, $topic, $feedback);
+    $stmt = $conn->prepare("INSERT INTO feedback (username, contact, email, topic, feedback) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sisss", $username, $contact, $email, $topic, $feedback);
 
     if ($stmt->execute()) {
         echo "<script>alert('Feedback submitted successfully!');</script>";
-        // Optionally, redirect to another page
-        // header("Location: success.php");
+        
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -197,20 +227,24 @@ button, input[type="submit"] {
    <div class="content">
         <div class="container">
             <div class="feedback">
-                <form action="feedback.php" method="post" onsubmit="return validateForm()">
+                <form action="feedback.php" method="post">
                     <input type="hidden" name="form_type" value="feedback">
                     <br>
                     <br>
                     <u><b>Feedback</b></u>
                     <br>
                     <br>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" placeholder="Please enter your email" required><br><br>
 
                     <label for="topic">Topic:</label>
-                    <input type="text" id="topic" name="topic" placeholder="Please enter your topic" required><br><br>
-                    
-                    <label>Feedback: <textarea name="feedback_input" id="feedback_input" rows="4" cols="40" required placeholder="Enter your feedback here"></textarea></label>
+                    <select size="1" name="topic">
+                    <option> Please select your topic  </option>
+                    <option value="queries"> Queries  </option>
+                    <option value="feedback"> Feedback  </option>
+                    <option value="quotation"> Quotation </option>
+                    <br>
+                    <br>
+
+                    <label>Feedback:<textarea name="feedback_input" id="feedback_input" rows="4" cols="40" required placeholder="Enter your feedback here"></textarea></label>
                                     
                     <input type="submit" value="Submit">
                     <br>
@@ -238,34 +272,10 @@ button, input[type="submit"] {
    </footer>
 
    <script src="../script.js"></script>
-   <script>
-       
-        function validateForm() {
-            // Add your form validation logic here
-            document.getElementById("myForm").onsubmit = function(event) {
-    
-            // Validate Email
-            var email = document.getElementById("email").value;
-            var emailRegex = /^[\w.-]+@[A-Za-z\d.-]+\.[A-Za-z]{2,3}$/;
-            var emailRegex1 = /^[\w.-]+@[A-Za-z\d.-]+\.[A-Za-z]{2,3}(\.[A-Za-z]{2,3}){1,3}$/; // Email format
-            if (emailRegex.test(email)) {
-        
-            }
-            else if(emailRegex1.test(email)) {
-        
-            }
-            else{
-                alert("Please enter a valid email address.");
-                event.preventDefault();
-            return;
-            }
-
-    
-            };
-            return true;
-        }
-    </script>
+   
 </body>
 </html>
+
+
 
 
