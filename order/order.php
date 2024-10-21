@@ -198,6 +198,7 @@ $conn->close();
                                     echo "Paid";
                                 } else {
                                     echo "Delivered";
+                                    echo ' (<a href="../feedback/feedback.php" style="color: blue;">Your Feedback</a>)';
                                 }
                                 ?>
                             </td>
