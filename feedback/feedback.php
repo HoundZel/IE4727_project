@@ -136,6 +136,7 @@ form{
     .login{
         border-bottom: 2px solid gray;
     }
+    
 }
 
 /* PC version */
@@ -145,24 +146,34 @@ form{
         height:60vh;
     }
     .container div{
-        width: 50%;
+        
+        width: 25%;
         height: 100%;
     }
-    .login{
-        border-right: 2px solid gray;
-    }
+
 }
 
-form input{
+form select{
     border: 2px solid #000;
     margin-bottom: 15px;
     padding: 5px;
     border-radius: 5px;
 }
 
-form input:valid {
+form textarea{
+    border: 2px solid #000;
+    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+form select:valid {
     border-color: green;
   }
+
+form textarea:valid {
+    border-color: green;
+  }  
 
 /* New CSS for buttons */
 button, input[type="submit"] {
@@ -236,15 +247,15 @@ button, input[type="submit"] {
                     <br>
 
                     <label for="topic">Topic:</label>
-                    <select size="1" name="topic">
-                    <option> Please select your topic  </option>
+                    <select size="1" name="topic" required>
+                    <option value="" disabled selected> Please select your topic </option>
                     <option value="queries"> Queries  </option>
                     <option value="feedback"> Feedback  </option>
                     <option value="quotation"> Quotation </option>
-                    <br>
-                    <br>
+                    
+                    
 
-                    <label>Feedback:<textarea name="feedback_input" id="feedback_input" rows="4" cols="40" required placeholder="Enter your feedback here"></textarea></label>
+                    <label><textarea name="feedback_input" id="feedback_input" rows="20" cols="40" required placeholder="Enter your feedback here"></textarea></label>
                                     
                     <input type="submit" value="Submit">
                     <br>
@@ -275,6 +286,8 @@ button, input[type="submit"] {
    
 </body>
 </html>
+
+
 
 
 
