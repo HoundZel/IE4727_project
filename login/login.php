@@ -249,7 +249,7 @@ button, input[type="submit"] {
                     <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="******" minlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}" required><br><br>
 
                     <input type="submit" value="Login">
                     <br>
@@ -267,7 +267,7 @@ button, input[type="submit"] {
                     <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="******" minlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}" required><br><br>
 
                     <input type="submit" value="Change">
                     <br>
@@ -291,9 +291,12 @@ button, input[type="submit"] {
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" placeholder="yujiitadori@gmail.com" required><br><br>
 
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="******" minlength="6" maxlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}" required><br><br>
+                    <label for="signup_password">Password:</label>
+                    <input type="password" id="signup_password" name="password" placeholder="******" required><br><br>
 
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="******" required><br><br>
+                    
                     <input type="submit" value="Sign Up">
                     <br>
                     <br>
@@ -348,6 +351,24 @@ button, input[type="submit"] {
                 alert("Please enter a valid email address.");
                 event.preventDefault();
             return;
+            }
+
+            // Validate Password Match
+            var init = document.getElementById("signup_password").value;
+            var sec = document.getElementById("confirm_password").value;
+
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
+
+            if (!passwordRegex.test(init)) {
+                alert("Password must be at least 12 characters long, include at least one lowercase letter, one uppercase letter, one number, and one special character.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (init !== sec) {
+                alert("The two passwords you entered are not the same.");
+                event.preventDefault();
+                return false;
             }
 
             return true;
