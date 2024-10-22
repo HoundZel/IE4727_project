@@ -147,8 +147,13 @@ form{
     }
     .container div{
         
-        width: 25%;
+        width: 80%;
         height: 100%;
+    }
+
+    form textarea{
+    width: 130vh;
+    height:30vh;
     }
 
 }
@@ -286,8 +291,6 @@ button, input[type="submit"] {
    
 </body>
 </html>
-
-
 
 
 
