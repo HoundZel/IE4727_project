@@ -275,7 +275,7 @@ button, input[type="submit"] {
                 </form>
             </div>
             <div class="signup">
-                <form action="login.php" method="post" onsubmit="return validateForm()">
+                <form action="login.php" method="post" onsubmit="return validateForm2()">
                     <input type="hidden" name="form_type" value="signup">
                     <br>
                     <br>
@@ -327,7 +327,13 @@ button, input[type="submit"] {
                 form.style.display = 'none';
             }
         }
+
         function validateForm() {
+
+            return true;
+        }
+            
+        function validateForm2() {
             // Validate Email
             var email = document.getElementById("email").value;
             var emailRegex = /^[\w.-]+@[A-Za-z\d.-]+\.[A-Za-z]{2,3}$/;
