@@ -249,7 +249,7 @@ button, input[type="submit"] {
                     <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="******" minlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}" required><br><br>
+                    <input type="password" id="password" name="password" placeholder="******" required><br><br>
 
                     <input type="submit" value="Login">
                     <br>
