@@ -146,8 +146,8 @@ form{
         height:60vh;
     }
     .container div{
-        
-        width: 80%;
+        padding-left:170px;
+        width: 90%;
         height: 100%;
     }
 
@@ -247,7 +247,7 @@ button, input[type="submit"] {
                     <input type="hidden" name="form_type" value="feedback">
                     <br>
                     <br>
-                    <u><b>Feedback</b></u>
+                    <h1><u><b>Feedback</b></u></h1>
                     <br>
                     <br>
 
@@ -291,6 +291,8 @@ button, input[type="submit"] {
    
 </body>
 </html>
+
+
 
 
 
