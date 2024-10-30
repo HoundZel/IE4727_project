@@ -24,6 +24,31 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
+$order_id = isset($_GET['order_id']) ? $_GET['order_id'] : '';
+
+// Initialize variables for pre-filling the form
+$address = $unit = $postalcode = $date = $time = $quantity = $total = '';
+$selected_dishes = [];
+
+// If order_id is provided, fetch the order details
+if ($order_id) {
+    $stmt = $conn->prepare("SELECT * FROM orders WHERE id = ?");
+    $stmt->bind_param("i", $order_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $order = $result->fetch_assoc();
+        $address = $order['address'];
+        $unit = $order['unit'];
+        $postalcode = $order['postalcode'];
+        $date = $order['date'];
+        $time = $order['time'];
+        $quantity = $order['quantity'];
+        $total = $order['total'];
+        $selected_dishes = explode(',', $order['dishlist']);
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -165,14 +190,34 @@ if (!isset($_SESSION['username'])) {
                                 echo "<tr><th colspan='2'><u>" . htmlspecialchars(ucwords($current_course)) . "</u></th></tr>";
                             }
                             $dish_name = ucwords($row['name']);
+                            $checked = in_array($row['name'], $selected_dishes) ? 'checked' : '';
                             if ($category === "bento") {
                                 echo "<tr><td><input type='checkbox' class='hidden-checkbox' name='selected_dishes[]' value='" . htmlspecialchars($row['name']) . "' checked></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
                             } else {
-                                echo "<tr><td><input type='checkbox' class='course-checkbox' name='selected_dishes[" . htmlspecialchars($current_course) . "]' value='" . htmlspecialchars($row['name']) . "' data-course='" . htmlspecialchars($current_course) . "'></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
+                                echo "<tr><td><input type='checkbox' class='course-checkbox' name='selected_dishes[" . htmlspecialchars($current_course) . "]' value='" . htmlspecialchars($row['name']) . "' data-course='" . htmlspecialchars($current_course) . "' $checked></td><td>" . htmlspecialchars($dish_name) . "</td></tr>";
                             }
                         }
                         echo "</table>";
                         echo "<br>";
+
+                        // Pre-fill the form fields
+                        echo "<label for='address'>Address:</label>";
+                        echo "<input type='text' id='address' name='address' value='" . htmlspecialchars($address) . "' required><br><br>";
+
+                        echo "<label for='unit_number'>Unit Number:</label>";
+                        echo "<input type='text' id='unit_number' name='unit_number' value='" . htmlspecialchars($unit) . "' required><br><br>";
+
+                        echo "<label for='postal_code'>Postal Code:</label>";
+                        echo "<input type='text' id='postal_code' name='postal_code' value='" . htmlspecialchars($postalcode) . "' required><br><br>";
+
+                        echo "<label for='date'>Date:</label>";
+                        echo "<input type='date' id='date' name='date' min='" . date('Y-m-d', strtotime('+1 day')) . "' required><br><br>";
+
+                        echo "<label for='time'>Time:</label>";
+                        echo "<input type='time' id='time' name='time' required><br><br>";
+
+                        echo "<label for='quantity'>Quantity:</label>";
+                        echo "<input type='number' id='quantity' name='quantity' value='". 1 ."' min='". 1 ."' required><br><br>";
                     } else {
                         echo "<p>No dishes found in this category.</p>";
                     }
@@ -185,25 +230,6 @@ if (!isset($_SESSION['username'])) {
                 echo "<h1>No product selected</h1>";
             }
             ?>
-            <br>
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address" required><br><br>
-
-            <label for="unit_number">Unit Number:</label>
-            <input type="text" id="unit_number" name="unit_number" required><br><br>
-
-            <label for="postal_code">Postal Code:</label>
-            <input type="text" id="postal_code" name="postal_code" required><br><br>
-
-            <label for="date">Date:</label>
-            <input type="date" id="date" name="date" min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>" required><br><br>
-
-            <label for="time">Time:</label>
-            <input type="time" id="time" name="time" required><br><br>
-
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" min="1" value="1" required><br><br>
-            
             <div id="price-details">
                 <table>
                     <tr>

@@ -102,6 +102,41 @@ $conn->close();
     ol.s {
         list-style-type: inherit;
     }
+
+    .reorder-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+    .reorder-button:hover {
+        background-color: darkgreen;
+    }
+    .reorder-button:active {
+        transform: scale(0.95);
+    }
+    .feedback-button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid black;
+        border-radius: 5px;
+        background-color: lightblue;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s, transform 0.1s;
+    }
+    .feedback-button:hover {
+        background-color: darkblue;
+    }
+    .feedback-button:active {
+        transform: scale(0.95);
+    }
 </style>
 
 <body>
@@ -199,14 +234,26 @@ $conn->close();
                                     
                                 } else {
                                     echo "Delivered";
-                                    echo ' (<a href="../feedback/feedback.php" style="color: blue;">Your Feedback</a>)';
                                 }
                                 ?>
                                 <br>
                                 <br>
-                                <a href="../cart/cart.php?product_id=<?php echo urlencode($order['itemname']); ?>" style="color: green;">(Reorder)</a>
                             </td>
                         </tr>
+                        <tr>
+                            <th> 
+                                <a href="../cart/cart.php?product_id=<?php echo urlencode($order['itemname']); ?>&order_id=<?php echo urlencode($order['id']); ?>" class="reorder-button">Reorder</a>
+                            </th>
+                            <td>
+                                <?php
+                                $orderDateTime = new DateTime($order['date'] . ' ' . $order['time']. ':00');
+                                $currentDateTime = new DateTime();
+                                if ($orderDateTime > $currentDateTime) {
+                                    } else {
+                                    echo '<a href="../feedback/feedback.php" class="feedback-button">Feedback</a>';
+                                }
+                                ?>
+                            </td>
                     </table>
                 </div>
             </div>
