@@ -247,7 +247,7 @@ button, input[type="submit"] {
                     <input type="hidden" name="form_type" value="feedback">
                     <br>
                     <br>
-                    <h1><u><b>Feedback</b></u></h1>
+                    <h2><u><b>Feedback</b></u></h2>
                     <br>
                     <br>
 
