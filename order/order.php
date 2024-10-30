@@ -196,11 +196,15 @@ $conn->close();
                                 $currentDateTime = new DateTime();
                                 if ($orderDateTime > $currentDateTime) {
                                     echo "Paid";
+                                    
                                 } else {
                                     echo "Delivered";
                                     echo ' (<a href="../feedback/feedback.php" style="color: blue;">Your Feedback</a>)';
                                 }
                                 ?>
+                                <br>
+                                <br>
+                                <a href="../cart/cart.php?product_id=<?php echo urlencode($order['itemname']); ?>" style="color: green;">(Reorder)</a>
                             </td>
                         </tr>
                     </table>
