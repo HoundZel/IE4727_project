@@ -1,6 +1,86 @@
 <!-- this is the landing page -->
- <?php
-    session_start();
+<?php
+session_start();
+
+// Database connection
+$servername = "localhost"; 
+$username = "root"; 
+$password = ""; 
+$dbname = "professionals";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+function popular($conn) {
+    // Count distinct items in the orders table
+    $countQuery = "SELECT COUNT(DISTINCT itemname) AS distinct_count FROM orders";
+    $countResult = $conn->query($countQuery);
+    $row = $countResult->fetch_assoc();
+    $distinctCount = (int)$row['distinct_count'];
+
+    // Define default top items
+    $defaults = [
+        ['itemname' => 'Super Value', 'imgname' => 'menu/curryfish.jpg'],
+        ['itemname' => 'Mini Buffet A', 'imgname' => 'menu/springroll.jpg'],
+        ['itemname' => 'High Tea Set', 'imgname' => 'menu/muffin.jpg']
+    ];
+
+    if ($distinctCount >= 3) {
+        // SQL query to get top items by aggregated quantity if there are 3 or more distinct items
+        $sql = "
+            SELECT orders.itemname AS itemname, SUM(orders.quantity) AS total_quantity, menu.imgname AS imgname
+            FROM orders
+            INNER JOIN menu ON orders.itemname = menu.name
+            GROUP BY orders.itemname
+            ORDER BY total_quantity DESC
+            LIMIT 3;";
+
+        $result = $conn->query($sql);
+        $topItems = [];
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $imgname = htmlspecialchars($row['imgname']);
+                if (pathinfo($imgname, PATHINFO_EXTENSION) === '') {
+                    $imgname .= '.jpg';
+                }
+                $topItems[] = [
+                    'itemname' => htmlspecialchars($row['itemname']),
+                    'imgname' => 'menu/' . $imgname
+                ];
+            }
+        }
+    } else {
+        // Use default items if there are 2 or fewer distinct items in orders
+        $topItems = $defaults;
+    }
+
+    // Output HTML for each top-selling item in fixed positions with clickable images
+    echo '
+    <div class="top-item first">
+        <a href="cart/cart.php?product_id=' . urlencode($topItems[0]['itemname']) . '">
+            <img class="topImg" src="media/' . $topItems[0]['imgname'] . '" alt="' . $topItems[0]['itemname'] . '">
+        </a>
+        <h3 id="top">' . $topItems[0]['itemname'] . '</h3>
+    </div>
+    <div class="top-item second">
+        <a href="cart/cart.php?product_id=' . urlencode($topItems[1]['itemname']) . '">
+            <img class="topImg" src="media/' . $topItems[1]['imgname'] . '" alt="' . $topItems[1]['itemname'] . '">
+        </a>
+        <h3 id="top">' . $topItems[1]['itemname'] . '</h3>
+    </div>
+    <div class="top-item third">
+        <a href="cart/cart.php?product_id=' . urlencode($topItems[2]['itemname']) . '">
+            <img class="topImg" src="media/' . $topItems[2]['imgname'] . '" alt="' . $topItems[2]['itemname'] . '">
+        </a>
+        <h3 id="top">' . $topItems[2]['itemname'] . '</h3>
+    </div>';
+}
 ?>
 
  <!DOCTYPE html>
@@ -61,18 +141,7 @@
         <br>
         <h2><u>Best Sellers</u></h2>
         <div class="topseller">
-            <div class="first">
-                <img class="topImg" src="media/curryfish.jpg">
-                <h3 id="top">Super Value</h3>
-            </div>
-            <div class="second">
-                <img class="topImg" src="media/springroll.jpg">
-                <h3 id="top">Mini Buffet A</h3>
-            </div>
-            <div class="third">
-                <img class="topImg" src="media/muffin.jpg">
-                <h3 id="top">High Tea Set</h3>
-            </div>
+            <?php popular($conn); ?>
         </div>
         <br>
         <h2><u>About Us</u></h2>
@@ -126,5 +195,6 @@
     </script>
  </body>
  </html>
+
 
 
