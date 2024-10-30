@@ -62,10 +62,6 @@ body{
     column-gap: 40px;
 }
 
-.nav_item{
-
-}
-
 .nav_link{
     color: rgba(255, 255, 255, 0.75);
     font-size: 15px;
@@ -141,9 +137,6 @@ body{
     flex-direction: column;
 }
 
-.content div{
-    /* border: 2px solid red; */
-}
 
 .banner {
     text-align: center;
