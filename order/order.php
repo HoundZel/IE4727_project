@@ -240,21 +240,17 @@ $conn->close();
                                 <br>
                             </td>
                         </tr>
-                        <tr>
-                            <th> 
-                                <a href="../cart/cart.php?product_id=<?php echo urlencode($order['itemname']); ?>&order_id=<?php echo urlencode($order['id']); ?>" class="reorder-button">Reorder</a>
-                            </th>
-                            <td>
-                                <?php
-                                $orderDateTime = new DateTime($order['date'] . ' ' . $order['time']. ':00');
-                                $currentDateTime = new DateTime();
-                                if ($orderDateTime > $currentDateTime) {
-                                    } else {
-                                    echo '<a href="../feedback/feedback.php" class="feedback-button">Feedback</a>';
-                                }
-                                ?>
-                            </td>
                     </table>
+                    <a href="../cart/cart.php?product_id=<?php echo urlencode($order['itemname']); ?>&order_id=<?php echo urlencode($order['id']); ?>" class="reorder-button">Reorder</a>
+                    &nbsp;
+                    <?php
+                    $orderDateTime = new DateTime($order['date'] . ' ' . $order['time']. ':00');
+                    $currentDateTime = new DateTime();
+                    if ($orderDateTime > $currentDateTime) {
+                        } else {
+                        echo '<a href="../feedback/feedback.php" class="feedback-button">Feedback</a>';
+                    }
+                    ?>
                 </div>
             </div>
         <?php endforeach; ?>
