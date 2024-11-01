@@ -256,7 +256,7 @@ button, input[type="submit"] {
                     <br>
                 </form>
                 <a class="forgot-password" onclick="showChangePasswordForm()">Forgot your password?</a>
-                <form id="change-password-form" action="login.php" method="post" onsubmit="return validateForm()">
+                <form id="change-password-form" action="login.php" method="post" onsubmit="return validateForm3()">
                     <input type="hidden" name="form_type" value="change">
                     <br>
                     <br>
@@ -267,7 +267,10 @@ button, input[type="submit"] {
                     <input type="text" id="username" name="username" placeholder="Yuji1" pattern="[A-Za-z0-9_]+" required><br><br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" placeholder="******" minlength="12" pattern="(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}" required><br><br>
+                    <input type="password" id="change_password" name="password" placeholder="******" required><br><br>
+                    
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" id="confirm_change_password" name="confirm_password" placeholder="******" required><br><br>
 
                     <input type="submit" value="Change">
                     <br>
@@ -373,8 +376,31 @@ button, input[type="submit"] {
 
             return true;
         }
+
+        function validateForm3() {
+            
+
+            // Validate Password Match
+            var init = document.getElementById("change_password").value;
+            var sec = document.getElementById("confirm_change_password").value;
+
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$/;
+
+            if (!passwordRegex.test(init)) {
+                alert("Password must be at least 12 characters long, include at least one lowercase letter, one uppercase letter, one number, and one special character.");
+                event.preventDefault();
+                return false;
+            }
+
+            if (init !== sec) {
+                alert("The two passwords you entered are not the same.");
+                event.preventDefault();
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </body>
 </html>
-
 
