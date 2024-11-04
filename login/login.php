@@ -33,10 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             // User authenticated
             $_SESSION['username'] = $username;
+            $stmt->close();
             header("Location: ../index.php");
+            exit();
         } else {
             // Authentication failed
+            $stmt->close();
             echo "<script>alert('Invalid username or password'); window.location.href = 'login.php';</script>";
+            exit();
         }
     } elseif ($form_type == 'signup') {
         // Signup form was submitted
@@ -53,16 +57,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($check_result->num_rows > 0) {
             // Found duplicates
+            $check_stmt->close();
             echo "<script>alert('Username, Contact Number, or Email already exists. Please use different credentials.'); window.location.href = 'login.php';</script>";
+            exit();
         } else {
+            $check_stmt->close();
             // Insert new user
             $insert_stmt = $conn->prepare("INSERT INTO users (username, contact, email, password) VALUES (?, ?, ?, ?)");
             $insert_stmt->bind_param("ssss", $username, $contact, $email, $password); 
             if ($insert_stmt->execute()) {
                 $_SESSION['username'] = $username; // Log the user in
+                $insert_stmt->close();
                 echo "<script>alert('Registration successful!'); window.location.href = '../index.php';</script>";
+                exit();
             } else {
+                $insert_stmt->close();
                 echo "<script>alert('Registration failed. Please try again.'); window.location.href = 'login.php';</script>";
+                exit();
             }
         }
         $check_stmt->close();
@@ -84,15 +95,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
             $stmt->bind_param("ss", $new_password, $username);
             if ($stmt->execute()) {
+                $stmt->close();
                 echo "<script>alert('Password changed successfully!'); window.location.href = 'login.php';</script>";
+                exit();
             } else {
+                $stmt->close();
                 echo "<script>alert('Password change failed. Please try again.'); window.location.href = 'login.php';</script>";
+                exit();
             }
         } else {
+            $stmt->close();
             // Username does not exist
             echo "<script>alert('Username does not exist'); window.location.href = 'login.php';</script>";
+            exit();
         }
+
     }
+    $conn->close();
 }
 ?>
 
@@ -417,7 +436,3 @@ button, input[type="submit"] {
     </script>
 </body>
 </html>
-
-
-
-
