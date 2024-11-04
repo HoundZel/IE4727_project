@@ -60,7 +60,7 @@ function popular($conn) {
         $topItems = $defaults;
     }
 
-    // Output HTML for each top-selling item in fixed positions with clickable images
+    // Output HTML 
     echo '
     <div class="top-item first">
         <a href="cart/cart.php?product_id=' . urlencode($topItems[0]['itemname']) . '">
@@ -81,6 +81,8 @@ function popular($conn) {
         <h3 id="top">' . $topItems[2]['itemname'] . '</h3>
     </div>';
 }
+
+$conn->close();
 ?>
 
  <!DOCTYPE html>
@@ -195,6 +197,9 @@ function popular($conn) {
     </script>
  </body>
  </html>
+
+
+
 
 
 
