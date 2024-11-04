@@ -82,7 +82,6 @@ function popular($conn) {
     </div>';
 }
 
-$conn->close();
 ?>
 
  <!DOCTYPE html>
