@@ -25,9 +25,9 @@ function popular($conn) {
 
     // Define default top items
     $defaults = [
-        ['itemname' => 'Super Value', 'imgname' => 'menu/curryfish.jpg'],
-        ['itemname' => 'Mini Buffet A', 'imgname' => 'menu/springroll.jpg'],
-        ['itemname' => 'High Tea Set', 'imgname' => 'menu/muffin.jpg']
+        ['itemname' => 'Super Value', 'imgname' => '../media/curryfish.jpg'],
+        ['itemname' => 'Mini Buffet A', 'imgname' => '../media/springroll.jpg'],
+        ['itemname' => 'High Tea Set', 'imgname' => '../media/muffin.jpg']
     ];
 
     if ($distinctCount >= 3) {
