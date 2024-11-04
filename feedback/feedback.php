@@ -35,7 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($email_result->num_rows > 0) {
     $row = $email_result->fetch_assoc();
     $user_email = $row['email'];
+    $email_query->close();
     } else {
+    $email_query->close();
     echo "Error: Unable to retrieve email for the user.";
     exit();
     }
@@ -49,7 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($contact_result->num_rows > 0) {
     $row = $contact_result->fetch_assoc();
     $user_contact = $row['contact'];
+    $contact_query->close();
     } else {
+    $contact_query->close();
     echo "Error: Unable to retrieve contact for the user.";
     exit();
     }
