@@ -3,9 +3,9 @@
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection
-    $servername = "localhost"; // Change if different
-    $username = "root"; // Replace with your username
-    $password = ""; // Replace with your password
+    $servername = "localhost"; 
+    $username = "root"; 
+    $password = ""; 
     $dbname = "professionals";
 
     // Create connection
