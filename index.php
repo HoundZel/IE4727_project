@@ -197,7 +197,6 @@ function popular($conn) {
  </body>
  </html>
 
-<!-- hello -->
 
 
 
