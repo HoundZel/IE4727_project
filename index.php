@@ -197,7 +197,3 @@ function popular($conn) {
  </body>
  </html>
 
-<!-- morerrrrr -->
-
-
-
